@@ -1,180 +1,124 @@
-# MemoSynth - Chatbot with Contextual Memory
+# MemoSynth - AI Memory-Enhanced Chatbot
 
-![MemoSynth Logo](https://via.placeholder.com/1200x400?text=MemoSynth)
+MemoSynth is an AI-powered chatbot application that remembers past interactions and provides relevant context-based responses to users. The chatbot uses state-of-the-art language models and memory storage to maintain a continuous conversation history, allowing it to deliver smarter and more context-aware responses.
 
-MemoSynth is an intelligent chatbot application with memory capabilities, allowing for contextual and meaningful conversations. Built with FastAPI, React, Supabase PostgreSQL, and Groq LLM integration, this application maintains conversation history to provide personalized responses.
+This project is built using **FastAPI** for the backend, **Streamlit** for the frontend, and integrates with **Groq** for generating AI responses, **Redis** for session memory storage, and **Chroma** for semantic search.
 
 ## Features
 
-- **Contextual Memory**: The chatbot remembers previous conversations and uses them for context in responses
-- **Multiple Conversations**: Users can manage multiple conversation threads
-- **Modern UI**: Clean, responsive interface built with React
-- **Powerful Backend**: FastAPI provides fast, asynchronous API endpoints
-- **Supabase Integration**: Cloud PostgreSQL database with real-time capabilities
-- **LLM Integration**: Leverages Groq's language models for intelligent responses
-
-## Tech Stack
-
-- **Frontend**: React.js with modern JavaScript
-- **Backend**: FastAPI (Python)
-- **Database**: Supabase PostgreSQL
-- **AI Integration**: Groq API
-- **Deployment**: Vercel
+- **Contextual Conversations**: The bot remembers past interactions and uses that context to provide relevant responses.
+- **Memory Management**: Stores and recalls user interactions using Redis and Chroma.
+- **Easy Setup**: Simple environment configuration to get the bot up and running.
+- **Modern UI**: Built with Streamlit for an interactive and user-friendly interface.
+- **AI Integration**: Uses Groq for generating context-aware responses.
 
 ## Project Structure
 
-```
-memosynth/
-├── backend/                  # FastAPI Backend
-│   ├── app.py               # Main FastAPI application
-│   ├── models.py            # Database models for Supabase
-│   ├── config.py            # Configuration with Supabase settings
-│   ├── database.py          # Database connection to Supabase
-│   ├── services/            # Services folder
-│   │   ├── __init__.py
-│   │   ├── chat_service.py  # Chat processing logic
-│   │   ├── supabase_service.py # Supabase API integration
-│   │   └── groq_service.py  # Groq API integration
-│   └── requirements.txt     # Python dependencies
-├── frontend/                # React Frontend
-│   ├── public/
-│   ├── src/
-│   │   ├── components/      # React components
-│   │   ├── services/        # API services with Supabase integration
-│   │   │   ├── api.js       # API interaction functions
-│   │   │   └── supabase.js  # Supabase client setup
-│   │   └── styles/          # CSS/SCSS styles
-│   ├── package.json         # With Supabase dependencies
-│   └── .env                 # Frontend environment variables
-└── README.md                # Project documentation
-```
+- **/main.py**: Contains the FastAPI backend logic, including memory management, AI model interaction, and API routing.
+- **/app.py**: Streamlit frontend for interacting with the user. It sends user input to the FastAPI backend and displays responses.
+- **/.env**: Contains environment variables like API keys and URLs.
+- **/requirements.txt**: Lists all the required Python dependencies for the project.
+- **/.gitignore**: Excludes unnecessary files from version control (e.g., environment files, Redis data).
 
-## Getting Started
+## Prerequisites
 
-### Prerequisites
+- **Python 3.8+**
+- **Redis**: Make sure Redis is running locally or through a cloud service.
+- **Chroma**: For memory and semantic search management.
+- **Groq API Key**: Needed to generate AI responses from Groq.
 
-- Node.js (v16+)
-- Python (v3.9+)
-- Supabase account (free tier works for development)
+## Setup
 
-### Setting up Supabase
+### 1. Clone the Repository
 
-1. Create a new project on [Supabase](https://supabase.com/)
-2. Navigate to the SQL Editor in your Supabase dashboard
-3. Run the SQL setup script provided in the `supabase-sql.sql` file
-4. Note your Supabase URL and anon/public key from the API settings
+```bash
+git clone https://github.com/yourusername/MemoSynth.git
+cd MemoSynth
 
-### Environment Variables
+### 2. Install Dependencies : Make sure to create a virtual environment first.
 
-#### Backend (`.env` in `backend/` directory)
-```
-DATABASE_URL=postgresql://postgres:[YOUR-PASSWORD]@db.[YOUR-PROJECT-REF].supabase.co:5432/postgres
-SUPABASE_URL=https://[YOUR-PROJECT-REF].supabase.co
-SUPABASE_KEY=[YOUR-SUPABASE-ANON-KEY]
-GROQ_API_KEY=your_groq_api_key
-GROQ_MODEL_NAME=llama3-70b-8192
+```bash
+python -m venv venv
+source venv/bin/activate   # On Windows use `venv\Scripts\activate`
+pip install -r requirements.txt
 ```
 
-#### Frontend (`.env` in `frontend/` directory)
+### 3. Configure Environment Variables
+Create a .env file in the root directory and add your environment variables.
+
+```env
+REDIS_URL=redis://localhost:6379
+GROQ_API_KEY=your_groq_api_key_here
 ```
-REACT_APP_API_URL=http://localhost:8000
-REACT_APP_SUPABASE_URL=https://[YOUR-PROJECT-REF].supabase.co
-REACT_APP_SUPABASE_ANON_KEY=[YOUR-SUPABASE-ANON-KEY]
+
+### 4. Run Redis
+If Redis is not installed, you can download and run it from here. To run Redis locally:
+
+```bash
+redis-server
 ```
 
-### Installation
+### 5. Run the Application
+To start the backend:
 
-1. **Clone the repository**
-   ```bash
-   git clone https://github.com/yourusername/MemoSynth.git
-   cd MemoSynth
-   ```
+```bash
+uvicorn main:app --reload
+```
 
-2. **Backend Setup**
-   ```bash
-   cd backend
-   python -m venv venv
-   source venv/bin/activate  # On Windows: venv\Scripts\activate
-   pip install -r requirements.txt
-   ```
+### To start the frontend (Streamlit app):
 
-3. **Frontend Setup**
-   ```bash
-   cd frontend
-   npm install
-   ```
+```bash
+streamlit run app.py
+```
 
-### Running the Application
+### 6. Access the Application
+Once both the backend and frontend are running, open your browser and go to:
 
-1. **Start the Backend Server**
-   ```bash
-   cd backend
-   python app.py
-   ```
-   The API will be available at http://localhost:8000
+```text
+http://localhost:8501
+```
 
-2. **Start the Frontend Development Server**
-   ```bash
-   cd frontend
-   npm start
-   ```
-   The application will be available at http://localhost:3000
+Usage
+Start the conversation: Type a message in the input box.
 
-## Deployment
+Memory: The bot will remember your previous messages and provide responses based on the context.
 
-### Deploying to Vercel
+Interaction: Keep chatting, and the bot will update its memory, generating responses that refer back to earlier conversations.
 
-1. **Backend Deployment**
-   - Connect your GitHub repository to Vercel
-   - Set up the following environment variables in Vercel:
-     - `DATABASE_URL`
-     - `SUPABASE_URL`
-     - `SUPABASE_KEY`
-     - `GROQ_API_KEY`
-     - `GROQ_MODEL_NAME`
+## Architecture
+-**Backend (FastAPI)**: Handles API requests, interacts with Redis for storing user messages, and performs semantic searches using Chroma.
 
-2. **Frontend Deployment**
-   - Connect your GitHub repository to Vercel
-   - Set up the following environment variables in Vercel:
-     - `REACT_APP_API_URL` (pointing to your deployed backend URL)
-     - `REACT_APP_SUPABASE_URL`
-     - `REACT_APP_SUPABASE_ANON_KEY`
+-**Frontend (Streamlit)**: Provides an interactive interface where users can send and receive messages. It communicates with the FastAPI backend.
 
-## Supabase Features Used
+-**Memory Storage (Redis)**: Used to store recent conversations in memory, allowing the bot to retain context.
 
-- **PostgreSQL Database**: For storing chat messages and conversation history
-- **Row-Level Security (RLS)**: For securing user data
-- **SQL Functions**: Custom functions for conversation retrieval
-- **Real-time Subscriptions**: For instant message updates (optional)
+-**Semantic Search (Chroma)**: Used to retrieve past conversations based on message similarity, enabling the bot to recall relevant context.
 
-## API Endpoints
+-**AI Generation (Groq)**: Processes the context and user input to generate the chatbot's response.
 
-| Endpoint | Method | Description |
-|----------|--------|-------------|
-| `/` | GET | Health check |
-| `/api/chat` | POST | Send a message and get a response |
-| `/api/conversations/{user_id}` | GET | Get all conversations for a user |
-| `/api/conversation/{conversation_id}` | GET | Get messages in a conversation |
+Contributing
+We welcome contributions to MemoSynth! If you'd like to contribute, please follow these steps:
 
-## Contributing
+Fork the repository.
 
-1. Fork the repository
-2. Create your feature branch (`git checkout -b feature/amazing-feature`)
-3. Commit your changes (`git commit -m 'Add some amazing feature'`)
-4. Push to the branch (`git push origin feature/amazing-feature`)
-5. Open a Pull Request
+Create a new branch for your feature (git checkout -b feature-branch).
 
-## License
+Commit your changes (git commit -am 'Add new feature').
 
-This project is licensed under the MIT License.
+Push to your fork (git push origin feature-branch).
 
-## Acknowledgments
+Open a pull request.
 
-- [Supabase](https://supabase.com) for the PostgreSQL database and real-time features
-- [Groq](https://groq.com) for their powerful language models
-- [FastAPI](https://fastapi.tiangolo.com/) for the efficient backend framework
-- [React](https://reactjs.org/) for the frontend library
+License
+This project is licensed under the MIT License - see the LICENSE file for details.
 
----
+Acknowledgements
+FastAPI: Web framework for building APIs with Python.
 
-Developed with ❤️ by [Your Name]
+Streamlit: A framework for building interactive web apps in Python.
+
+Redis: In-memory key-value store for fast data storage.
+
+Chroma: For memory management and semantic search.
+
+Groq: API for generating AI responses.
