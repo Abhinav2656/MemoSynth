@@ -26,5 +26,7 @@ if user_input:
         reply = res.json().get("reply", "Error: No reply received.")
     except Exception as e:
         reply = f"Error: {e}"
+    
+    # Append bot response and display
     st.session_state.history.append(("bot", reply))
     st.rerun()
