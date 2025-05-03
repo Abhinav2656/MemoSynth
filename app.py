@@ -21,7 +21,7 @@ user_input = st.chat_input("Type your message...")
 if user_input:
     st.session_state.history.append(("user", user_input))
     try:
-        res = requests.post("http://localhost:8001/chat", json={"message": user_input})
+        res = requests.post("https://memosynth-backend.onrender.com/chat", json={"message": user_input})
         res.raise_for_status()
         reply = res.json().get("reply", "Error: No reply received.")
     except Exception as e:
