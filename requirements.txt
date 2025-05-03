@@ -5,3 +5,5 @@ redis
 sentence-transformers
 httpx
 chromadb
+streamlit
+requests
